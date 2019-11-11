@@ -51,7 +51,7 @@ public void enter_email_address() throws Throwable {
 
 @Then("^click sign up$")
 public void click_sign_up() throws Throwable {
-	driver.findElement(By.xpath("//button[.='Sign up!']")).click();
+	driver.findElement(By.xpath("//button[.='Sign up!!!']")).click();
 }
 
 @After

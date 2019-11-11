@@ -29,7 +29,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-light bg-light static-top">
     <div class="container">
-      <a class="navbar-brand" href="#">Demo Application with Rolling Update Deployment</a>
+      <a class="navbar-brand" href="#">Demo Application with Rolling Update Deployment - 11-11-2019 demo - Failure senario</a>
       <a class="btn btn-primary" href="#">Sign In</a>
     </div>
   </nav>
