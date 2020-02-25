@@ -7,7 +7,7 @@ podTemplate(
       name: 'dotnet-build-pod', image: 'registry.access.redhat.com/dotnet/dotnet-20-jenkins-slave-rhel7:latest'
     )
   ]) {
-    node('dotnet-build-pod-x') {
+    node('jenkins-slave') {
       stage('Display .NET Version') {
         sh """
         dotnet --version
