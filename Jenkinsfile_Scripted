@@ -12,7 +12,7 @@ volumes: [
 ]
 )
 {
-    node('mypod1') {
+    node('maven') {
         stage('Check running containers') {
             container('docker') {
                 git branch: 'develop', url: 'https://github.com/rakesh635/helloworld-selenium.git'
