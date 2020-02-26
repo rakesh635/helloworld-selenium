@@ -3,7 +3,7 @@ podTemplate(label: "mypod",
                     inheritFrom: "maven", 
                     containers: [
             containerTemplate(name: "jnlp", 
-                              image: "registry.access.redhat.com/openshift3/jenkins-slave-maven-rhel7", 
+                              image: "registry.redhat.io/openshift4/ose-jenkins-agent-maven", 
                               resourceRequestMemory: "512Mi", 
                               resourceLimitMemory: "512Mi", 
                               envVars: [
