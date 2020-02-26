@@ -8,7 +8,7 @@ podTemplate(label: "mypod",
                               resourceLimitMemory: "512Mi", 
                               envVars: [
               envVar(key: "CONTAINER_HEAP_PERCENT", value: "0.25"),
-              envVar(key: "OPENSHIFT_JENKINS_JVM_ARCH", value: "x86_64")
+              envVar(key: "OPENSHIFT_JENKINS_JVM_ARCH", value: "i386")
             ])
           ]) {
           node("mypod") { 
