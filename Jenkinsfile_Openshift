@@ -1,17 +1,18 @@
-// this currently is restricted on OpenShift Online, however is possible on OSD/OCP clusters
-// we create a dotnet builder pod using the provided jenkins slave image for executing dotnet commands in
-podTemplate(
-  label: 'pod1', cloud: 'openshift', 
-  containers: [
-    containerTemplate(
-      name: 'nodejs', image: 'image-registry.openshift-image-registry.svc:5000/openshift/jenkins-agent-nodejs:latest', ttyEnabled: true, command: ''
-    )
-  ]) {
-    node('pod1') {
-      stage('Display .NET Version') {
-        sh """
-        dotnet --version
-        """
-      }
-    }
-}
+podTemplate(label: "mypod", 
+                    cloud: "openshift", 
+                    inheritFrom: "maven", 
+                    containers: [
+            containerTemplate(name: "jnlp", 
+                              image: "openshift/jenkins-agent-maven-35-centos7:v3.10", 
+                              resourceRequestMemory: "512Mi", 
+                              resourceLimitMemory: "512Mi", 
+                              envVars: [
+              envVar(key: "CONTAINER_HEAP_PERCENT", value: "0.25") 
+            ])
+          ]) {
+          node("mypod") { 
+            sh "git clone https://github.com/openshift/openshift-jee-sample.git ."
+            sh "mvn -B -Popenshift package"
+            sh "oc start-build -F openshift-jee-sample-docker --from-file=target/ROOT.war"
+          }
+        }
