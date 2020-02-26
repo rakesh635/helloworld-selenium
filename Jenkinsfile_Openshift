@@ -9,10 +9,78 @@ podTemplate(label: "mypod",
                               envVars: [
               envVar(key: "CONTAINER_HEAP_PERCENT", value: "0.25") 
             ])
+            containerTemplate(name: 'git', image: 'alpine/git', ttyEnabled: true, command: 'cat'),
+            containerTemplate(name: 'maven', image: 'maven:3.3.9-jdk-8-alpine', command: 'cat', ttyEnabled: true),
+            containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
+            containerTemplate(name: 'kubectl', image: 'roffe/kubectl:v1.13.2', command: '', ttyEnabled: true),
+            containerTemplate(name: 'tomcat8', image: 'tomcat:8.0', command: '', ttyEnabled: true)
           ]) {
           node("mypod") { 
-            sh "git clone https://github.com/openshift/openshift-jee-sample.git ."
-            sh "mvn -B -Popenshift package"
-            sh "oc start-build -F openshift-jee-sample-docker --from-file=target/ROOT.war"
+            stage('Check running containers') {
+            container('docker') {
+                git branch: 'develop', url: 'https://github.com/rakesh635/helloworld-selenium.git'
+                // example to show you can run docker commands when you mount the socket
+                sh 'hostname'
+                sh 'hostname -i'
+                sh 'docker images'
+                env.deltag = env.BUILD_NUMBER-2
+                sh 'echo $deltag'
+            }
+        }
+        stage('Clone repository') {
+            container('git') {
+                sh 'whoami'
+                sh 'hostname -i'
+                //sh 'git clone -b master https://github.com/rakesh635/helloworld-selenium.git'
+                checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/develop']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'helloworld-selenium/'], [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: false]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/rakesh635/helloworld-selenium.git']]]
+                dir('helloworld-selenium/') {
+                    sh 'git checkout develop'
+                    sh 'cat src/main/webapp/index.jsp'
+                    def datas = readYaml file: 'cicdconfig.yml'
+                    //assert datas.something == 'Override'
+                    env.APPNAME = datas.parameter.appname
+                    env.DEPLOYMENTSTRATEGY = datas.parameter.deployment.strategy
+                    env.NAMEPREFIX = ''
+                    if (env.DEPLOYMENTSTRATEGY == 'canary') {
+                        env.NAMEPREFIX = '-canary'
+                    } else if (env.DEPLOYMENTSTRATEGY == 'bluegreen') {
+                        env.NAMEPREFIX = '-bg'
+                    }
+                }
+                sh 'git clone -b master https://github.com/rakesh635/jenkinspipleineformaven.git'
+                dir('jenkinspipleineformaven/') {
+                    sh "sed -i 's/{{BUILDNUMBER}}/$BUILD_NUMBER/g' kubernetesfiles/deployment"+env.NAMEPREFIX+".yaml"
+                    sh "sed -i 's/{{APPNAME}}/$APPNAME/g' kubernetesfiles/deployment"+env.NAMEPREFIX+".yaml"
+                    sh "sed -i 's/{{NAMEPREFIX}}/$NAMEPREFIX/g' kubernetesfiles/deployment"+env.NAMEPREFIX+".yaml"
+                    sh 'cat kubernetesfiles/deployment'+env.NAMEPREFIX+'.yaml'
+                    sh "sed -i 's/{{APPNAME}}/$APPNAME/g' kubernetesfiles/service"+env.NAMEPREFIX+".yaml"
+                    sh "sed -i 's/{{BUILDNUMBER}}/$BUILD_NUMBER/g' kubernetesfiles/service"+env.NAMEPREFIX+".yaml"
+                    sh 'cat kubernetesfiles/service'+env.NAMEPREFIX+'.yaml'
+			    }
+            }
+        }
+        /*stage('Maven validate compile test') {
+            container('maven') {
+                dir('hello-world-war/') {
+                    sh 'mvn validate compile test'
+                }
+            }
+        }*/
+        stage('Maven package verify') {
+            container('maven') {
+                dir('helloworld-selenium/') {
+                    //sh 'mvn package verify -DskipTests'
+                    //sh 'mvn package verify -Dtest=\\!TestRunner* -DfailIfNoTests=false'
+                    pom = readMavenPom file: 'pom.xml'
+                    env.POMVERSION = pom.version
+                    print env.POMVERSION
+                    env.ARTIFACTID = pom.artifactId
+                    print env.ARTIFACTID
+
+                    sh 'mvn sonar:sonar package verify -Dtest=\\!TestRunner* -DfailIfNoTests=false -Dsonar.projectKey=helloworld -Dsonar.host.url=http://34.93.44.123:30975 -Dsonar.login=78d83f52376696ba64e1006766370af7e831b7cb'
+                    
+                }
+            }
+        }
           }
         }
