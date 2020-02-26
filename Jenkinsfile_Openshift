@@ -1,7 +1,7 @@
 // this currently is restricted on OpenShift Online, however is possible on OSD/OCP clusters
 // we create a dotnet builder pod using the provided jenkins slave image for executing dotnet commands in
 podTemplate(
-  label: 'dotnet-build-pod',
+  label: 'dotnet-build-pod', cloud: 'openshift', 
   containers: [
     containerTemplate(
       name: 'dotnet-build-pod', image: 'registry.access.redhat.com/dotnet/dotnet-20-jenkins-slave-rhel7:latest'
