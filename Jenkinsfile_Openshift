@@ -13,6 +13,6 @@ podTemplate(label: "mypod",
           node("mypod") { 
             sh "git clone https://github.com/openshift/openshift-jee-sample.git ."
             sh "mvn -B -Popenshift package"
-            sh "oc start-build -F helloworld-selenium-git --from-file=target/ROOT.war -n "
+            sh "oc start-build -F openshift-jee-sample --from-file=target/ROOT.war -n "
           }
         }
