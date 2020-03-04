@@ -12,7 +12,7 @@ podTemplate(label: "mypod",
             containerTemplate(name: 'git', 
                               image: 'alpine/git',
                               ttyEnabled: true,
-                              command: 'cat'
+                              command: 'cat',
                               resourceRequestMemory: "256Mi", 
                               resourceLimitMemory: "256Mi", 
                               envVars: [
