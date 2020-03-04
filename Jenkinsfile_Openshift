@@ -21,7 +21,7 @@ podTemplate(label: "mypod",
           node("mypod") { 
             //sh "git clone https://github.com/openshift/openshift-jee-sample.git ."
             stage('Check running containers') {
-                container('git') {
+                container('base') {
                     sh 'git status'
                 }
             }
