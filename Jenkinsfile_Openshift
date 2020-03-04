@@ -12,7 +12,7 @@ podTemplate(label: "mypod",
           ]) {
           node("mypod") { 
             //sh "git clone https://github.com/openshift/openshift-jee-sample.git ."
-            sh "git clone https://github.com/rakesh635/helloworld-selenium.git ."
+            sh "git --branch openshift clone https://github.com/rakesh635/helloworld-selenium.git ."
             sh "mvn -B -Popenshift package"
             sh "oc start-build -F wildfly --from-file=target/ROOT.war -n rakesh635-test"
           }
