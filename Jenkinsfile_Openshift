@@ -16,10 +16,26 @@ podTemplate(label: "mypod",
                               resourceRequestMemory: "256Mi", 
                               resourceLimitMemory: "256Mi", 
                               envVars: [
+            ]),containerTemplate(name: 'docker', 
+                              image: 'docker',
+                              ttyEnabled: true,
+                              command: 'cat',
+                              resourceRequestMemory: "256Mi", 
+                              resourceLimitMemory: "256Mi", 
+                              envVars: [
             ])
           ]) {
           node("mypod") { 
             //sh "git clone https://github.com/openshift/openshift-jee-sample.git ."
+            stage('Check running containers') {
+                container('docker') {
+                    sh 'hostname'
+                    sh 'hostname -i'
+                    sh 'docker images'
+                    //env.deltag = env.BUILD_NUMBER-2
+                    //sh 'echo $deltag'
+                }
+            }
             stage('checkout') {
               sh "pwd"
               sh "ls"
