@@ -10,7 +10,7 @@ podTemplate(label: "mypod",
 
             ]),
             containerTemplate(name: 'base', 
-                              image: 'alpine/git',
+                              image: 'registry.redhat.io/rhmap47/fh-scm',
                               ttyEnabled: true,
                               command: 'cat',
                               resourceRequestMemory: "256Mi", 
