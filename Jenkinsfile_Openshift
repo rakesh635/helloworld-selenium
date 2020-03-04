@@ -4,12 +4,19 @@ podTemplate(label: "mypod",
                     containers: [
             containerTemplate(name: "jnlp", 
                               image: "registry.redhat.io/openshift4/ose-jenkins-agent-maven", 
-                              resourceRequestMemory: "512Mi", 
-                              resourceLimitMemory: "512Mi", 
+                              resourceRequestMemory: "256Mi", 
+                              resourceLimitMemory: "256Mi", 
                               envVars: [
 
             ]),
-            containerTemplate(name: 'git', image: 'alpine/git', ttyEnabled: true, command: 'cat')
+            containerTemplate(name: 'git', 
+                              image: 'alpine/git',
+                              ttyEnabled: true,
+                              command: 'cat'
+                              resourceRequestMemory: "256Mi", 
+                              resourceLimitMemory: "256Mi", 
+                              envVars: [
+            ])
           ]) {
           node("mypod") { 
             //sh "git clone https://github.com/openshift/openshift-jee-sample.git ."
