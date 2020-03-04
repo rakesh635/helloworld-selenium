@@ -9,8 +9,8 @@ podTemplate(label: "mypod",
                               envVars: [
 
             ]),
-            containerTemplate(name: 'git', 
-                              image: 'alpine/git',
+            containerTemplate(name: 'base', 
+                              image: 'registry.redhat.io/openshift4/ose-jenkins-agent-base',
                               ttyEnabled: true,
                               command: 'cat',
                               resourceRequestMemory: "256Mi", 
