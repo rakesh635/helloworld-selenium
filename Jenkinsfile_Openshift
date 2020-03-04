@@ -24,5 +24,21 @@ podTemplate(label: "mypod",
             {
               sh "oc start-build -F wildfly --from-file=target/ROOT.war -n rakesh635-test"
             }  
+            stage("Dummy Web Regression Test")
+            {
+              sh "oc start-build -F wildfly --from-file=target/ROOT.war -n rakesh635-test"
+            } 
+            stage("Dummy API Regression Test")
+            {
+              sh "oc start-build -F wildfly --from-file=target/ROOT.war -n rakesh635-test"
+            } 
+            stage("Dummy Desktop Regression Test")
+            {
+              sh "oc start-build -F wildfly --from-file=target/ROOT.war -n rakesh635-test"
+            } 
+            stage("Dummy Performance Test")
+            {
+              sh "oc start-build -F wildfly --from-file=target/ROOT.war -n rakesh635-test"
+            } 
           }
         }
