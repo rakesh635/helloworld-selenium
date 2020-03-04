@@ -16,13 +16,6 @@ podTemplate(label: "mypod",
                               resourceRequestMemory: "256Mi", 
                               resourceLimitMemory: "256Mi", 
                               envVars: [
-            ]),containerTemplate(name: 'docker', 
-                              image: 'docker',
-                              ttyEnabled: true,
-                              command: 'cat',
-                              resourceRequestMemory: "256Mi", 
-                              resourceLimitMemory: "256Mi", 
-                              envVars: [
             ])
           ]) {
           node("mypod") { 
