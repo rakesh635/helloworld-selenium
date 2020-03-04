@@ -8,7 +8,8 @@ podTemplate(label: "mypod",
                               resourceLimitMemory: "512Mi", 
                               envVars: [
 
-            ])
+            ]),
+            containerTemplate(name: 'git', image: 'alpine/git', ttyEnabled: true, command: 'cat')
           ]) {
           node("mypod") { 
             //sh "git clone https://github.com/openshift/openshift-jee-sample.git ."
