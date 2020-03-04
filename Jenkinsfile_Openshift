@@ -24,19 +24,12 @@ podTemplate(label: "mypod",
                               resourceLimitMemory: "256Mi", 
                               envVars: [
             ])
-          ],
-          volumes: [
-            hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
           ]) {
           node("mypod") { 
             //sh "git clone https://github.com/openshift/openshift-jee-sample.git ."
             stage('Check running containers') {
-                container('docker') {
-                    sh 'hostname'
-                    sh 'hostname -i'
-                    sh 'docker images'
-                    //env.deltag = env.BUILD_NUMBER-2
-                    //sh 'echo $deltag'
+                container('git') {
+                    sh 'git status'
                 }
             }
             stage('checkout') {
