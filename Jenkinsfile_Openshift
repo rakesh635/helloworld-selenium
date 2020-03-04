@@ -20,15 +20,6 @@ podTemplate(label: "mypod",
           ]) {
           node("mypod") { 
             //sh "git clone https://github.com/openshift/openshift-jee-sample.git ."
-            stage('Check running containers') {
-                container('base') {
-                    checkout changelog: false, poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/develop']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'helloworld-selenium/'], [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: false]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/rakesh635/helloworld-selenium.git']]]
-                    dir('helloworld-selenium/') {
-                        sh 'git checkout develop'
-                        sh 'cat src/main/webapp/index.jsp'
-                    }
-                }
-            }
             stage('checkout') {
               sh "pwd"
               sh "ls"
