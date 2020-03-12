@@ -28,7 +28,7 @@ podTemplate(label: "mypod",
             stage("Maven build") {
               sh "mvn -B -Popenshift package"
             }
-            stage("Openshift deploy")
+            stage("Openshift deploy in Test")
             {
               sh "oc start-build -F wildfly --from-file=target/ROOT.war -n rakesh635-test"
             }  
@@ -47,6 +47,11 @@ podTemplate(label: "mypod",
             stage("Dummy Performance Test")
             {
               sh "echo 'Dummy Performance Test'"
-            } 
+            }
+            stage("Test Tagging")
+            {
+              sh "oc tag wildfly:latest wildfly:test"
+            }
+            
           }
         }
