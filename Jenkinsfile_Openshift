@@ -27,7 +27,7 @@ podTemplate(label: "mypod",
             stage('checkout') {
               sh "pwd"
               sh "ls"
-              sh "git clone --branch openshift https://github.com/rakesh635/helloworld-selenium.git ."
+              sh "git clone --branch openshift https://github.com/rakesh635/devops.git ."
             }
             stage("Maven build") {
               sh "mvn -B -Popenshift package"
