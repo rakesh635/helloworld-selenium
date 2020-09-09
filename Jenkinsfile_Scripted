@@ -74,7 +74,7 @@ volumes: [
                     env.ARTIFACTID = pom.artifactId
                     print env.ARTIFACTID
 
-                    sh 'mvn sonar:sonar package verify -Dtest=\\!TestRunner* -DfailIfNoTests=false -Dsonar.projectKey=helloworld -Dsonar.host.url=http://34.93.44.123:30975 -Dsonar.login=78d83f52376696ba64e1006766370af7e831b7cb'
+                    sh 'mvn sonar:sonar package verify -Dtest=\\!TestRunner* -DfailIfNoTests=false -Dsonar.projectKey=testproject635_2 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=3fd6fa100577172e207b7d83fa62039cdefd0ff6'
                     
                 }
             }
